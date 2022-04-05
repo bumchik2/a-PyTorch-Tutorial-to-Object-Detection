@@ -27,7 +27,6 @@ class ResnetBase(nn.Module):
     def forward_hook(self, layer_name):
         def hook(module, input, output):
             self.selected_out[layer_name] = output
-
         return hook
 
     def forward(self, x):
@@ -360,8 +359,10 @@ class SSD300(nn.Module):
 
         assert(base in ('vgg', 'resnet'))
         if base == 'vgg':
+            print('using vgg as base')
             self.base = VGGBase(use_pretrained=use_pretrained_base)
         else:
+            print('using resnet as base')
             self.base = ResnetBase(use_pretrained=use_pretrained_base)
         self.aux_convs = AuxiliaryConvolutions()
         self.pred_convs = PredictionConvolutions(n_classes)
