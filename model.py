@@ -13,7 +13,7 @@ class VGGBase(nn.Module):
     VGG base convolutions to produce lower-level feature maps.
     """
 
-    def __init__(self):
+    def __init__(self, use_pretrained=True):
         super(VGGBase, self).__init__()
 
         # Standard convolutional layers in VGG16
@@ -46,7 +46,8 @@ class VGGBase(nn.Module):
         self.conv7 = nn.Conv2d(1024, 1024, kernel_size=1)
 
         # Load pretrained layers
-        self.load_pretrained_layers()
+        if use_pretrained:
+            self.load_pretrained_layers()
 
     def forward(self, image):
         """
@@ -325,12 +326,12 @@ class SSD300(nn.Module):
     The SSD300 network - encapsulates the base VGG network, auxiliary, and prediction convolutions.
     """
 
-    def __init__(self, n_classes):
+    def __init__(self, n_classes, use_pretrained_base=True):
         super(SSD300, self).__init__()
 
         self.n_classes = n_classes
 
-        self.base = VGGBase()
+        self.base = VGGBase(use_pretrained=use_pretrained_base)
         self.aux_convs = AuxiliaryConvolutions()
         self.pred_convs = PredictionConvolutions(n_classes)
 
