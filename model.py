@@ -4,8 +4,35 @@ import torch.nn.functional as F
 from math import sqrt
 from itertools import product as product
 import torchvision
+from collections import OrderedDict
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+class ResnetBase(nn.Module):
+    def __init__(self, use_pretrained=True):
+        super(ResnetBase, self).__init__()
+
+        self.backbone_model = torchvision.models.resnet50(pretrained=use_pretrained)
+
+        self.selected_out = OrderedDict()
+
+        # register hooks
+        self.fhooks = []
+        self.fhooks.append(
+            getattr(self.backbone_model, 'layer2')[3].relu.register_forward_hook(self.forward_hook('feature_map1')))
+        self.fhooks.append(
+            getattr(self.backbone_model, 'layer3')[5].relu.register_forward_hook(self.forward_hook('feature_map2')))
+
+    def forward_hook(self, layer_name):
+        def hook(module, input, output):
+            self.selected_out[layer_name] = output
+
+        return hook
+
+    def forward(self, x):
+        _ = self.backbone_model(x)
+        return self.selected_out['feature_map1'], self.selected_out['feature_map2']
 
 
 class VGGBase(nn.Module):
@@ -326,12 +353,16 @@ class SSD300(nn.Module):
     The SSD300 network - encapsulates the base VGG network, auxiliary, and prediction convolutions.
     """
 
-    def __init__(self, n_classes, use_pretrained_base=True):
+    def __init__(self, n_classes, use_pretrained_base=True, base='vgg'):
         super(SSD300, self).__init__()
 
         self.n_classes = n_classes
 
-        self.base = VGGBase(use_pretrained=use_pretrained_base)
+        assert(base in ('vgg', 'resnet'))
+        if base == 'vgg':
+            self.base = VGGBase(use_pretrained=use_pretrained_base)
+        else:
+            self.base = ResnetBase(use_pretrained=use_pretrained_base)
         self.aux_convs = AuxiliaryConvolutions()
         self.pred_convs = PredictionConvolutions(n_classes)
 
