@@ -31,8 +31,8 @@ class MyAuxiliaryConvolutions(nn.Module):
         self.conv11_2 = nn.Conv2d(128, 256, kernel_size=3, padding=0)  # dim. reduction because padding = 0
         # conv11_2 output is (N, 256, 1, 1)
 
-        self.conv12_1 = nn.ConvTranspose2D(256, 128, kernel_size=3, padding=0)
-        self.conv12_2 = nn.ConvTranpose2D(128, 256, kernel_size=1, padding=0)
+        self.conv12_1 = nn.ConvTranspose2d(256, 128, kernel_size=3, padding=0)
+        self.conv12_2 = nn.ConvTranspose2d(128, 256, kernel_size=1, padding=0)
         # conv12_2 output is (N, 256, 3, 3)
 
         # Initialize convolutions' parameters
