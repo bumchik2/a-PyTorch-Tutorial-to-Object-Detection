@@ -67,7 +67,8 @@ class MyAuxiliaryConvolutions(nn.Module):
         conv10_2_feats = out  # (N, 256, 3, 3)
 
         out = F.relu(self.conv11_1(out))  # (N, 128, 3, 3)
-        conv11_2_feats = F.relu(self.conv11_2(out))  # (N, 256, 1, 1)
+        out = F.relu(self.conv11_2(out))  # (N, 256, 1, 1)
+        conv11_2_feats = out  # (N, 256, 1, 1)
 
         out = F.relu(self.conv12_1(out))  # (N, 128, 3, 3)
         conv12_2_feats = F.relu(self.conv12_2(out))  # (N, 256, 3, 3)
