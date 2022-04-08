@@ -77,16 +77,16 @@ class MyAuxiliaryConvolutions2(nn.Module):
         conv11_2_feats = out  # (N, 256, 1, 1)
 
         # my code goes below
-        out = F.relu(self.my_deconv11_1(out))
+        out = F.relu(self.deconv11_1(out))
         deconv11_2_feats = out  # (N, 256, 1, 1)
 
-        out = F.relu(self.my_deconv10_1(out))
+        out = F.relu(self.deconv10_1(out))
         deconv10_2_feats = out  # (N, 256, 3, 3)
 
-        out = F.relu(self.my_deconv9_1(out))
+        out = F.relu(self.deconv9_1(out))
         deconv9_2_feats = out  # (N, 256, 5, 5)
 
-        out = F.relu(self.my_deconv8_1(out))
+        out = F.relu(self.deconv8_1(out))
         deconv8_2_feats = out  # (N, 512, 10, 10)
 
         feats_8_2 = F.relu(self.conv8_1_1_layer(torch.cat([conv8_2_feats, deconv8_2_feats], dim=1)))
