@@ -31,10 +31,15 @@ class MyAuxiliaryConvolutions2(nn.Module):
         self.conv11_1 = nn.Conv2d(256, 128, kernel_size=1, padding=0)
         self.conv11_2 = nn.Conv2d(128, 256, kernel_size=3, padding=0)  # dim. reduction because padding = 0
 
+        # (H - 1) x stride - 2 x padding + kernel_size + output_padding
         self.deconv11_1 = nn.ConvTranspose2d(256, 256, kernel_size=1, padding=0)
+        # 1 - 1 + 1 = 1
         self.deconv10_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, padding=0)
+        # (1 - 1) + 3 = 3
         self.deconv9_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, padding=0)
-        self.deconv8_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, stride=2, padding=1)
+        # (3 - 1) + 3 = 5
+        self.deconv8_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, stride=2, padding=1, output_padding=1)
+        # (5 - 1) x 2 - 2 + 3 + 1 = 10
 
         self.conv8_1_1_layer = nn.Conv2d(1024, 512, kernel_size=1, padding=0)
         self.conv9_1_1_layer = nn.Conv2d(512, 256, kernel_size=1, padding=0)
