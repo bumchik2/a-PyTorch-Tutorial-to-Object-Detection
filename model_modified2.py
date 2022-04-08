@@ -89,12 +89,12 @@ class MyAuxiliaryConvolutions2(nn.Module):
         out = F.relu(self.my_deconv8_1(out))
         deconv8_2_feats = out  # (N, 512, 10, 10)
 
-        feats_8_2 = self.conv8_1_1_layer(torch.cat([conv8_2_feats, deconv8_2_feats], dim=1))
-        feats_9_2 = self.conv9_1_1_layer(torch.cat([conv9_2_feats, deconv9_2_feats], dim=1))
-        feats_10_2 = self.conv10_1_1_layer(torch.cat([conv10_2_feats, deconv10_2_feats], dim=1))
-        feats_11_2 = self.conv11_1_1_layer(torch.cat([conv11_2_feats, deconv11_2_feats], dim=1))
+        feats_8_2 = F.relu(self.conv8_1_1_layer(torch.cat([conv8_2_feats, deconv8_2_feats], dim=1)))
+        feats_9_2 = F.relu(self.conv9_1_1_layer(torch.cat([conv9_2_feats, deconv9_2_feats], dim=1)))
+        feats_10_2 = F.relu(self.conv10_1_1_layer(torch.cat([conv10_2_feats, deconv10_2_feats], dim=1)))
+        feats_11_2 = F.relu(self.conv11_1_1_layer(torch.cat([conv11_2_feats, deconv11_2_feats], dim=1)))
 
-        return conv8_2_feats, conv9_2_feats, conv10_2_feats, conv11_2_feats
+        return feats_8_2, feats_9_2, feats_10_2, feats_11_2
 
 
 class MySSD3002(nn.Module):
