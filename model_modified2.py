@@ -38,7 +38,7 @@ class MyAuxiliaryConvolutions2(nn.Module):
         # (1 - 1) + 3 = 3
         self.deconv9_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, padding=0)
         # (3 - 1) + 3 = 5
-        self.deconv8_1 = nn.ConvTranspose2d(256, 256, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.deconv8_1 = nn.ConvTranspose2d(256, 512, kernel_size=3, stride=2, padding=1, output_padding=1)
         # (5 - 1) x 2 - 2 + 3 + 1 = 10
 
         self.conv8_1_1_layer = nn.Conv2d(1024, 512, kernel_size=1, padding=0)
